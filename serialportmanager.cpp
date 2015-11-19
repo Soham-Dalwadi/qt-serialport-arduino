@@ -116,11 +116,14 @@ void SerialPortManager::writeData(const QByteArray &data)
     serial->write(data);
 }
 
-
-
+/*The method waitForReadyRead() should be used before each read() call for the blocking approach
+ , because it processes all the I/O routines instead of Qt event-loop.*/
 void SerialPortManager::readData()
 {
     QByteArray data = serial->readAll();
+    while (serial->waitForReadyRead(10)) {
+        data+=serial->readAll();
+    }
 //    console->putData(data);
     qDebug() << "UART:" << data;
 }
