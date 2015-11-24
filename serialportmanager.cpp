@@ -114,6 +114,10 @@ void SerialPortManager::closeSerialPort()
 void SerialPortManager::writeData(const QByteArray &data)
 {
     serial->write(data);
+    if(serial->waitForBytesWritten(10))
+    {
+        qDebug()<<data.toHex();
+    }
 }
 
 /*The method waitForReadyRead() should be used before each read() call for the blocking approach
